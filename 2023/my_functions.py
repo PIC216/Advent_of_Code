@@ -2,6 +2,8 @@
 Contains all functions I create to solve the problems on Advent of Code 2023.
 '''
 
+import re
+
 # Used in Day 1
 def first_or_last_digit(string_with_num, first: bool = True):
     if not first:
