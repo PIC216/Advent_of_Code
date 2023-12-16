@@ -1,3 +1,7 @@
+"""
+My solution to Day 2 problem on Advent of Code 2023
+"""
+
 from my_functions import get_game_num_and_sets
 from my_functions import update_max_in_colour_dict
 
