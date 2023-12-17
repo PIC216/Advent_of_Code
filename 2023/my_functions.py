@@ -72,7 +72,7 @@ def get_game_num(game_string):
 
 # Used in Day 2
 def get_game_num_and_sets(game_string):
-    game_num = find_first_num(game_string.split(": ")[0])
+    game_num = get_game_num(game_string)
     game_sets_ = game_string.split(": ")[1].split("; ")
     game_sets = []
     for game_set_ in game_sets_:
