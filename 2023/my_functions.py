@@ -64,6 +64,12 @@ def find_first_num(string_with_num):
     return num
 
 
+# Used in Day 2, Day 4
+def get_game_num(game_string):
+    game_num = find_first_num(game_string.split(": ")[0])
+    return game_num
+
+
 # Used in Day 2
 def get_game_num_and_sets(game_string):
     game_num = find_first_num(game_string.split(": ")[0])
@@ -272,3 +278,28 @@ def get_gear_product(string_list: list = None, gear_nums_indices: list = None):
         gear_num = find_number(string_list, gear_num_index)
         gear_number_product *= gear_num
     return gear_number_product
+
+
+# Used in Day 4
+def get_numbers_from_string(a_string: str, winning_or_chosen: str):
+    if winning_or_chosen.lower() in ["w", "winning"]:
+        number_list_ = re.split(r' +', re.split(" +\| +", a_string)[0])
+    elif winning_or_chosen.lower() in ["c", "chosen"]:
+        number_list_ = re.split(r' +', re.split(" +\| +", a_string)[1])
+    else:
+        print("fix choice")
+        return
+    number_list = []
+    for number in number_list_:
+        number_list.append(int(number))
+    return number_list
+
+
+# Used in Day 4
+def get_num_of_wins(chosen_nums, winning_nums):
+    num_of_wins = 0
+    for chosen_num in chosen_nums:
+        if chosen_num in winning_nums:
+            num_of_wins += 1
+    return num_of_wins
+    
