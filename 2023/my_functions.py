@@ -175,9 +175,9 @@ def get_diagonals(original_index: list = None, max_row_=9, max_col_=9):
     # get diagonals
     if original_index[0] == 0:
         if original_index[1] == 0:
-            diagonals.append(get_up_down_index(get_right_left_index(original_index, left=False), up = False))
+            diagonals.append(get_up_down_index(get_right_left_index(original_index, left=False), up=False))
         elif original_index[1] == max_col_:
-            diagonals.append(get_up_down_index(get_right_left_index(original_index, left=True), up = False))
+            diagonals.append(get_up_down_index(get_right_left_index(original_index, left=True), up=False))
         else:
             diagonals.append(get_up_down_index(get_right_left_index(original_index, left=False), up=False))
             diagonals.append(get_up_down_index(get_right_left_index(original_index, left=True), up=False))
@@ -256,13 +256,9 @@ def get_definite_gear_nums(num_list: list = None, gear_diagonals: list = None):
     num_next_to_gear_check = []
     potential_gear_nums = []
     for num_group in num_list:
-        # print(num_group)
         for gear_diagonal in gear_diagonals:
-            # print(gear_diagonal)
-            num_next_to_gear = False
             if gear_diagonal in num_group:
-                num_next_to_gear = True
-                num_next_to_gear_check.append(num_next_to_gear)
+                num_next_to_gear_check.append(True)
                 potential_gear_nums.append(num_group)
                 break
     definite_gear_nums = []
@@ -334,4 +330,77 @@ def find_next_or_prev_value(sequence: list = None, next_: bool = True):
         if count > 1000:
             print("over 1000 diffs")
             break
-            
+
+
+# Used in Day 10
+def find_new_position_and_direction(a_map: list = None, current_position: list = None, current_direction: str = "N"):
+    new_position = ""
+    new_direction = ""
+    if current_direction == "N":
+        new_position = [current_position[0]-1, current_position[1]]
+        if a_map[new_position[0]][new_position[1]] == "7":
+            new_direction = "W"
+        elif a_map[new_position[0]][new_position[1]] == "|":
+            new_direction = "N"
+        elif a_map[new_position[0]][new_position[1]] == "F":
+            new_direction = "E"
+        elif a_map[new_position[0]][new_position[1]] == "S":
+            new_direction = "N"
+    elif current_direction == "E":
+        new_position = [current_position[0], current_position[1]+1]
+        if a_map[new_position[0]][new_position[1]] == "J":
+            new_direction = "N"
+        elif a_map[new_position[0]][new_position[1]] == "-":
+            new_direction = "E"
+        elif a_map[new_position[0]][new_position[1]] == "7":
+            new_direction = "S"
+        elif a_map[new_position[0]][new_position[1]] == "S":
+            new_direction = "E"
+    elif current_direction == "S":
+        new_position = [current_position[0]+1, current_position[1]]
+        if a_map[new_position[0]][new_position[1]] == "L":
+            new_direction = "E"
+        elif a_map[new_position[0]][new_position[1]] == "|":
+            new_direction = "S"
+        elif a_map[new_position[0]][new_position[1]] == "J":
+            new_direction = "W"
+        elif a_map[new_position[0]][new_position[1]] == "S":
+            new_direction = "S"
+    elif current_direction == "W":
+        new_position = [current_position[0], current_position[1]-1]
+        if a_map[new_position[0]][new_position[1]] == "F":
+            new_direction = "S"
+        elif a_map[new_position[0]][new_position[1]] == "-":
+            new_direction = "W"
+        elif a_map[new_position[0]][new_position[1]] == "L":
+            new_direction = "N"
+        elif a_map[new_position[0]][new_position[1]] == "S":
+            new_direction = "W"
+    return new_position, new_direction
+
+
+# Used in Day 10
+def find_s_position(a_map: list = None):
+    for row, map_string in enumerate(a_map):
+        if "S" in map_string:
+            col = map_string.index("S")
+            return [row, col]
+
+
+# Used in Day 10
+def polygon_area(vertices_list: list = None):
+    # adapted from geeksforgeeks.org
+    x_coords = [coord[0] for coord in vertices_list]
+    y_coords = [coord[1] for coord in vertices_list]
+    n = len(x_coords)
+    # Initialize area
+    total_area = 0.0
+
+    # Calculate value of shoelace formula
+    j = n - 1
+    for i in range(0, n):
+        total_area += (x_coords[j] + x_coords[i]) * (y_coords[j] - y_coords[i])
+        j = i  # j is previous vertex to i
+
+    # Return absolute value
+    return int(abs(total_area / 2.0))
