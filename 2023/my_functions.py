@@ -404,3 +404,93 @@ def polygon_area(vertices_list: list = None):
 
     # Return absolute value
     return int(abs(total_area / 2.0))
+
+
+# Used in Day 11
+def add_space_row(space_map_: list = None):
+    extra_rows_ = []
+    row_length = len(space_map_[0])
+    for index_1, row in enumerate(space_map_):
+        if row[0] == "." and len(set(row)) == 1:
+            extra_rows_.append(index_1)
+    # print(extra_rows)
+    for index_2, line in enumerate(extra_rows_):
+        space_map_.insert(index_2 + line, ["."] * row_length)
+    return space_map_
+
+
+# Used in Day 11
+def add_space_col(space_map_: list = None):
+    extra_cols_ = [index for index in range(len(space_map_[0]))]
+    # print(extra_cols)
+    # col_length = len(space_map_)
+    for row in space_map_:
+        for index_3, col in enumerate(row):
+            if col == "#" and index_3 in extra_cols_:
+                extra_cols_.remove(index_3)
+    # print(extra_cols)
+    for row in space_map_:
+        for index_4, col_ in enumerate(extra_cols_):
+            row.insert(index_4+col_, ".")
+    return space_map_
+
+
+# Used in Day 11
+def get_galaxy_coords(space_map_: list = None):
+    galaxy_coords_ = []
+    for row_index, row in enumerate(space_map_):
+        for col_index, col in enumerate(row):
+            if col == "#":
+                galaxy_coords_.append([row_index, col_index])
+    return galaxy_coords_
+
+
+# Used in Day 11
+def distance_between_galaxies(galaxy_1_: list = None, galaxy_2_: list = None):
+    dist = abs(galaxy_1_[0] - galaxy_2_[0]) + abs(galaxy_1_[1] - galaxy_2_[1])
+    return dist
+
+
+# Used in Day 11
+def get_extra_rows(space_map_: list = None):
+    extra_rows_ = []
+    # row_length = len(space_map_[0])
+    for index_1, row in enumerate(space_map_):
+        if row[0] == "." and len(set(row)) == 1:
+            extra_rows_.append(index_1)
+    return extra_rows_
+
+
+# Used in Day 11
+def get_extra_cols(space_map_: list = None):
+    extra_cols_ = [index for index in range(len(space_map_[0]))]
+    # print(extra_cols)
+    # col_length = len(space_map_)
+    for row in space_map_:
+        for index_3, col in enumerate(row):
+            if col == "#" and index_3 in extra_cols_:
+                extra_cols_.remove(index_3)
+    return extra_cols_
+
+
+# Used in Day 11
+def distance_between_bigger_galaxies(galaxy_1_: list = None,
+                                     galaxy_2_: list = None,
+                                     extra_rows_: list = None,
+                                     extra_cols_: list = None,
+                                     larger_space: int = 2):
+    extra_row_space = 0
+    for val in extra_rows_:
+        if galaxy_1_[0] < val < galaxy_2_[0] or galaxy_2_[0] < val < galaxy_1_[0]:
+            extra_row_space += larger_space - 1
+
+    extra_col_space = 0
+    for val in extra_cols_:
+        if galaxy_1_[1] < val < galaxy_2_[1] or galaxy_2_[1] < val < galaxy_1_[1]:
+            extra_col_space += larger_space - 1
+
+    dist = (abs(galaxy_1_[0] - galaxy_2_[0]) +
+            abs(galaxy_1_[1] - galaxy_2_[1]) +
+            extra_row_space +
+            extra_col_space)
+    return dist
