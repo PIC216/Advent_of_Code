@@ -302,4 +302,36 @@ def get_num_of_wins(chosen_nums, winning_nums):
         if chosen_num in winning_nums:
             num_of_wins += 1
     return num_of_wins
-    
+
+
+# Hold for Day 5 functions
+
+
+# Used in Day 9
+def find_diff(a_list: list = None):
+    diff_list = []
+    for i in range(len(a_list)-1):
+        diff_list.append(a_list[i+1] - a_list[i])
+    return diff_list
+
+
+# Used in Day 9
+def find_next_or_prev_value(sequence: list = None, next_: bool = True):
+    sequence_diffs = {0: [[], sequence]}
+    count = 1
+    while True:
+        sequence_diffs[count] = [sequence_diffs[count-1][1], find_diff(sequence_diffs[count-1][1])]
+        if len(set(sequence_diffs[count][1])) == 1:
+            if next_:
+                for index in range(count, 0, -1):
+                    sequence_diffs[index-1][1].append(sequence_diffs[index-1][1][-1] + sequence_diffs[index][1][-1])
+                return sequence_diffs[0][1][-1]
+            else:
+                for index in range(count, 0, -1):
+                    sequence_diffs[index-1][1].insert(0, sequence_diffs[index-1][1][0] - sequence_diffs[index][1][0])
+                return sequence_diffs[0][1][0]
+        count += 1
+        if count > 1000:
+            print("over 1000 diffs")
+            break
+            
