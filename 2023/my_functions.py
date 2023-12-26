@@ -494,3 +494,75 @@ def distance_between_bigger_galaxies(galaxy_1_: list = None,
             extra_row_space +
             extra_col_space)
     return dist
+
+
+# Hold for Day 12 functions
+
+
+# Used in Day 13
+def find_mirrors_in_row(valley_map: list = None):
+    mirror_row = 0
+    valley_rows = len(valley_map)
+    for index, row in enumerate(valley_map):
+        if index == 0:
+            continue
+        pre_index = index - 1
+        if row == valley_map[pre_index]:
+            rows_to_check = min(index, valley_rows - index)
+            rows_worked = [True]
+            for i in range(1, rows_to_check):
+                if valley_map[index + i] == valley_map[pre_index - i]:
+                    rows_worked.append(True)
+            if sum(rows_worked) == rows_to_check:
+                mirror_row = pre_index + 1
+                break
+    return mirror_row
+
+
+# Used in Day 13
+def find_summary(valley_map: list = None, non_smudged: bool = True):
+    summary = 0
+    if non_smudged:
+        mirror_row = find_mirrors_in_row(valley_map)
+    else:
+        mirror_row = find_smudge_mirror_row(valley_map)
+    if mirror_row:
+        summary += mirror_row * 100
+    if not mirror_row:
+        valley_map_transposed = [list(i) for i in zip(*valley_map)]
+        if non_smudged:
+            mirror_col = find_mirrors_in_row(valley_map_transposed)
+        else:
+            mirror_col = find_smudge_mirror_row(valley_map_transposed)
+        summary += mirror_col
+    return summary
+
+
+# Used in Day 13
+def find_line_differences(line_1, line_2):
+    differences = 0
+    for list_1_val, list_2_val in zip(line_1, line_2):
+        if list_1_val != list_2_val:
+            differences += 1
+    return differences
+
+
+# Used in Day 13
+def find_smudge_mirror_row(valley_map: list = None):
+    mirror_row = 0
+    valley_rows = len(valley_map)
+    for index, row in enumerate(valley_map):
+        if index == 0:
+            continue
+        pre_index = index - 1
+        comparison_1 = find_line_differences(row, valley_map[pre_index])
+        if comparison_1 in [0, 1]:
+            comparison_diffs = [comparison_1]
+            rows_to_check = min(index, valley_rows - index)
+            for i in range(1, rows_to_check):
+                comparison = find_line_differences(valley_map[index + i], valley_map[pre_index - i])
+                comparison_diffs.append(comparison)
+            if sum(comparison_diffs) == 1:
+                mirror_row = pre_index + 1
+                break
+    return mirror_row
