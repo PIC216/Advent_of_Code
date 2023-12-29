@@ -276,8 +276,8 @@ def get_gear_product(string_list: list = None, gear_nums_indices: list = None):
     return gear_number_product
 
 
-# Used in Day 4
-def get_numbers_from_string(a_string: str, winning_or_chosen: str):
+# Used in Day 4, Day 5
+def get_numbers_from_string(a_string: str, winning_or_chosen: str = "w"):
     if winning_or_chosen.lower() in ["w", "winning"]:
         number_list_ = re.split(r' +', re.split(" +\| +", a_string)[0])
     elif winning_or_chosen.lower() in ["c", "chosen"]:
@@ -300,7 +300,51 @@ def get_num_of_wins(chosen_nums, winning_nums):
     return num_of_wins
 
 
-# Hold for Day 5 functions
+# Used in Day 5
+def map_new_num(previous_num, map_: list = None):
+    new_num = None
+    for source_to_des in map_:
+        des_start = source_to_des[0]
+        source_start = source_to_des[1]
+        range_len = source_to_des[2]
+        if previous_num in range(source_start, source_start + range_len):
+            step = previous_num - source_start
+            new_num = des_start + step
+    if not new_num:
+        new_num = previous_num
+    return new_num
+
+
+# Used in Day 5
+def get_all_maps(map_: list = None):
+    combined_map = []
+    current_map = []
+    for line in map_:
+        if not line:
+            if current_map:
+                combined_map.append(current_map)
+                current_map = []
+        elif "map" in line or "seeds" in line:
+            pass
+        else:
+            single_map = get_numbers_from_string(line, "w")
+            current_map.append(single_map)
+    combined_map.append(current_map)
+    return combined_map
+
+
+# Used in Day 5
+def get_seed_pairs_from_seed_ranges(seed_ranges: list = None):
+    seed_pairs = []
+    pair = []
+    for seed_num in seed_ranges:
+        if not pair:
+            pair.append(seed_num)
+        else:
+            pair.append(seed_num)
+            seed_pairs.append(pair)
+            pair = []
+    return seed_pairs
 
 
 # Used in Day 9
